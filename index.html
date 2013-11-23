@@ -32,6 +32,7 @@
         });
 
         // Additional initialization code such as adding Event Listeners goes here
+        window.fbLoaded();
     };
 
     // Load the SDK asynchronously
@@ -60,20 +61,21 @@
 
     <!-- BLOCK: Your script playground -->
     <script>
-        $(function(){
+        window.fbLoaded = function(){
             // define the events when login status changed.
             FB.Event.subscribe('auth.login', function(response) {
                 // when user has been logged in, this block will be triggered.
                 var msg = "You're logged in.";
                 $("#my-login-message").html(msg);
-                console.log("Your login response: %s", response);
+                console.log("Your login response:");
+                console.log(response);
             });
 
             // define the action when user clicked the login button.
             $("#my-login-button").click(function(){
                 FB.login();
             });
-        });
+        };
     </script>
     <!-- ENDBLOCK: Your script playground -->
     
