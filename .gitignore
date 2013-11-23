@@ -1,0 +1,6 @@
+# globals
+.*.sw[pqrs]
+
+# independent files 
+/your_secret.js
+
