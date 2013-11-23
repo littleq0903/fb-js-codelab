@@ -47,6 +47,25 @@
     <!-- ENDBLOCK: FB SDK initialization -->
     
     <!-- BLOCK: Your playground -->
+
+    <!-- Button for login to Facebook -->
+    <div class="container">
+        <div id="my-login-control">
+            <button id="my-login-button" class="btn btn-primary">Login with Facebook</button>
+        </div>
+    </div>
     <!-- ENDBLOCK: Your playground -->
+
+    <!-- BLOCK: Your script playground -->
+    <script>
+        $(function(){
+            $("#my-login-button").click(function(){
+                FB.login();
+            });
+        });
+    
+    </script>
+    <!-- ENDBLOCK: Your script playground -->
+    
 </body>
 </html>
