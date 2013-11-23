@@ -38,8 +38,8 @@
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) {return;}
         js = d.createElement(s); js.id = id;
-        // Debug version of Facebook JS SDK
         //js.src = "http://connect.facebook.net/en_US/all.js";
+        // Debug version of Facebook JS SDK
         js.src = "http://connect.facebook.net/en_US/all/debug.js";
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
