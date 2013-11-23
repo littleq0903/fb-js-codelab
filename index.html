@@ -26,6 +26,7 @@
         // init the FB JS SDK
         FB.init({
         appId      : FacebookAppId,                        // App ID from the app dashboard
+        cookie     : true,                                 // Allowed server-side to fetch fb auth cookie
         status     : true,                                 // Check Facebook Login status
         xfbml      : true                                  // Look for social plugins on the page
         });
