@@ -51,16 +51,17 @@
     <!-- BLOCK: Your playground -->
 
     <!-- Button for login to Facebook -->
-    <div class="container">
+    <div id="my-html-playground" class="container">
         <div id="my-login-control" class="well">
             <button id="my-login-button" class="btn btn-primary">Login with Facebook</button>
             <p id="my-login-message"></p>
         </div>
     </div>
+
     <!-- ENDBLOCK: Your playground -->
 
     <!-- BLOCK: Your script playground -->
-    <script>
+    <script id="my-script-playground">
         window.fbLoaded = function(){
             // define the events when login status changed.
             FB.Event.subscribe('auth.login', function(response) {
