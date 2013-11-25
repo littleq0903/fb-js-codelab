@@ -56,6 +56,34 @@
             <button id="my-login-button" class="btn btn-primary">Login with Facebook</button>
             <p id="my-login-message"></p>
         </div>
+
+        <!-- Profile Area -->
+        <div id="my-profile" class="row">
+            <div class="col-md-3">
+                <!-- Profile Picture -->
+                <img id="my-profile-picture" class="img-thumbnail" src="" alt="">
+            </div>
+            <div class="col-md-9">
+                <!-- Profile Information -->
+                <dl class="dl-horizontal">
+                    <dt>Name</dt>
+                    <dd id="my-profile-name"></dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Gender</dt>
+                    <dd id="my-profile-gender"></dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Username</dt>
+                    <dd id="my-profile-username"></dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Facebook ID</dt>
+                    <dd id="my-profile-facebook-id"></dd>
+                </dl>
+            </div>
+        </div>
+
     </div>
 
     <!-- ENDBLOCK: Your playground -->
@@ -70,12 +98,49 @@
                 $("#my-login-message").html(msg);
                 console.log("Your login response:");
                 console.log(response);
+
+                // fetch the profile
+                fetch_my_profile();
             });
 
             // define the action when user clicked the login button.
             $("#my-login-button").click(function(){
                 FB.login();
             });
+
+            var fetch_my_profile = function () {
+                /*
+                Fetching profile information.
+                For more detail, please vist the following url:
+
+                (Graph API: User documentation)
+                https://developers.facebook.com/docs/graph-api/reference/user/
+                */
+                FB.api('/me', function(response) {
+                    var my_name = response.name;
+                    var my_gender = response.gender;
+                    var my_username = response.username;
+                    var my_facebook_id = response.id;
+
+                    $("#my-profile-name").html(my_name);
+                    $("#my-profile-gender").html(my_gender);
+                    $("#my-profile-username").html(my_username);
+                    $("#my-profile-facebook-id").html(my_facebook_id);
+                });
+
+                /*
+                Fetching profile picture from Facebook.
+                For more detail, please visit the following url:
+
+                (Graph API: User/Picture reference)
+                https://developers.facebook.com/docs/graph-api/reference/user/picture/
+                */
+                FB.api('/me/picture?width=250', function(response) {
+                    var my_picture_url = response.data.url;
+                
+                    $("#my-profile-picture").attr('src', my_picture_url);
+                });
+            };
         };
     </script>
     <!-- ENDBLOCK: Your script playground -->
