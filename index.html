@@ -81,6 +81,8 @@
                     <dt>Facebook ID</dt>
                     <dd id="my-profile-facebook-id"></dd>
                 </dl>
+
+                <button id="my-friend-button" class="btn btn-primary">Be My Friend!</button>
             </div>
         </div>
 
@@ -117,6 +119,26 @@
             // define the action when user clicked the login button.
             $("#my-login-button").click(function(){
                 FB.login();
+            });
+
+            // send me a friend request by using Facebok Friends Dialog
+            $("#my-friend-button").click(function(){
+                FB.api('/me', function (profile_response) {
+                    var my_id = profile_response.id;
+
+                    FB.ui({
+                        'method': 'friends',
+                        'id': my_id
+                    }, function(friend_response) {
+                        var she_say_yes = friend_response.action;
+
+                        if (she_say_yes) {
+                            alert("Thank you! We will be good friends.");
+                        } else {
+                            alert("Alright, it must be my wrong :(");
+                        }
+                    });
+                });
             });
 
             var fetch_my_profile = function () {
