@@ -11,6 +11,7 @@
 
     <!-- BLOCK: Loading libraries -->
     <script src="./your_secret.js"></script>
+    <script src="../your_secret.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
@@ -25,11 +26,13 @@
         // init the FB JS SDK
         FB.init({
         appId      : FacebookAppId,                        // App ID from the app dashboard
+        cookie     : true,                                 // Allowed server-side to fetch fb auth cookie
         status     : true,                                 // Check Facebook Login status
         xfbml      : true                                  // Look for social plugins on the page
         });
 
         // Additional initialization code such as adding Event Listeners goes here
+        window.fbLoaded();
     };
 
     // Load the SDK asynchronously
@@ -37,8 +40,8 @@
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) {return;}
         js = d.createElement(s); js.id = id;
-        // Debug version of Facebook JS SDK
         //js.src = "http://connect.facebook.net/en_US/all.js";
+        // Debug version of Facebook JS SDK
         js.src = "http://connect.facebook.net/en_US/all/debug.js";
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
@@ -46,6 +49,134 @@
     <!-- ENDBLOCK: FB SDK initialization -->
     
     <!-- BLOCK: Your playground -->
+
+    <!-- Button for login to Facebook -->
+    <div id="my-html-playground" class="container">
+        <div id="my-login-control" class="well">
+            <button id="my-login-button" class="btn btn-primary">Login with Facebook</button>
+            <p id="my-login-message"></p>
+        </div>
+
+        <!-- Profile Area -->
+        <div id="my-profile" class="row">
+            <div class="col-md-3">
+                <!-- Profile Picture -->
+                <img id="my-profile-picture" class="img-thumbnail" src="" alt="">
+            </div>
+            <div class="col-md-9">
+                <!-- Profile Information -->
+                <dl class="dl-horizontal">
+                    <dt>Name</dt>
+                    <dd id="my-profile-name"></dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Gender</dt>
+                    <dd id="my-profile-gender"></dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Username</dt>
+                    <dd id="my-profile-username"></dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Facebook ID</dt>
+                    <dd id="my-profile-facebook-id"></dd>
+                </dl>
+
+                <button id="my-friend-button" class="btn btn-primary">Be My Friend!</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div id="my-like-btn" class="col-md-8">
+                <!-- Comments -->
+                <div class="fb-comments" data-href="https://www.facebook.com"></div>
+            </div>
+            <div id="my-comments" class="col-md-4">
+                <!-- Like Button -->
+                <div class="fb-like" data-href="https://www.facebook.com"></div>
+            </div>
+        </div>
+
+    </div>
+
     <!-- ENDBLOCK: Your playground -->
+
+    <!-- BLOCK: Your script playground -->
+    <script id="my-script-playground">
+        window.fbLoaded = function(){
+            // define the events when login status changed.
+            FB.Event.subscribe('auth.login', function(response) {
+                // when user has been logged in, this block will be triggered.
+                var msg = "You're logged in.";
+                $("#my-login-message").html(msg);
+                console.log("Your login response:");
+                console.log(response);
+
+                // fetch the profile
+                fetch_my_profile();
+            });
+
+            // define the action when user clicked the login button.
+            $("#my-login-button").click(function(){
+                FB.login();
+            });
+
+            // send me a friend request by using Facebok Friends Dialog
+            $("#my-friend-button").click(function(){
+                FB.api('/me', function (profile_response) {
+                    var my_id = profile_response.id;
+
+                    FB.ui({
+                        'method': 'friends',
+                        'id': my_id
+                    }, function(friend_response) {
+                        var she_say_yes = friend_response.action;
+
+                        if (she_say_yes) {
+                            alert("Thank you! We will be good friends.");
+                        } else {
+                            alert("Alright, it must be my wrong :(");
+                        }
+                    });
+                });
+            });
+
+            var fetch_my_profile = function () {
+                /*
+                Fetching profile information.
+                For more detail, please vist the following url:
+
+                (Graph API: User documentation)
+                https://developers.facebook.com/docs/graph-api/reference/user/
+                */
+                FB.api('/me', function(response) {
+                    var my_name = response.name;
+                    var my_gender = response.gender;
+                    var my_username = response.username;
+                    var my_facebook_id = response.id;
+
+                    $("#my-profile-name").html(my_name);
+                    $("#my-profile-gender").html(my_gender);
+                    $("#my-profile-username").html(my_username);
+                    $("#my-profile-facebook-id").html(my_facebook_id);
+                });
+
+                /*
+                Fetching profile picture from Facebook.
+                For more detail, please visit the following url:
+
+                (Graph API: User/Picture reference)
+                https://developers.facebook.com/docs/graph-api/reference/user/picture/
+                */
+                FB.api('/me/picture?width=250', function(response) {
+                    var my_picture_url = response.data.url;
+                
+                    $("#my-profile-picture").attr('src', my_picture_url);
+                });
+            };
+        };
+    </script>
+    <!-- ENDBLOCK: Your script playground -->
+    
 </body>
 </html>
