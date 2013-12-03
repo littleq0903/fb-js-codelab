@@ -9,4 +9,4 @@ Facebook JavaScript SDK tutorial for beginners.
 
 ### Go to Code Lab WIKI for Checkpoints
 
-[[Code Lab Checkpoints]]
+https://github.com/littleq0903/fb-js-codelab/wiki/Code-Lab
